@@ -20,6 +20,9 @@ class GithubProxy(conf: GithubConf, http: WSClient, comps: ControllerComponents)
   val SignatureHeader = "X-Hub-Signature"
 
   def proxied = Action(parse.tolerantText).async { req =>
+    req.headers.toSimpleMap.foreach { case (k, v) =>
+      log.info(s"$k=$v")
+    }
     val file = Files.createTempFile("github", ".json")
     Files.write(file, Seq(req.body).asJava)
     log.info(s"Wrote to ${file.toAbsolutePath}")
