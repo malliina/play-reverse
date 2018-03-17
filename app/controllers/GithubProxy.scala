@@ -1,7 +1,5 @@
 package controllers
 
-import java.nio.file.Files
-
 import com.malliina.reverse.GithubConf
 import com.malliina.values.ErrorMessage
 import org.apache.commons.codec.digest.HmacUtils
@@ -10,7 +8,6 @@ import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 
-import scala.collection.JavaConverters._
 import scala.concurrent.{ExecutionContext, Future}
 
 class GithubProxy(conf: GithubConf, http: WSClient, comps: ControllerComponents)(implicit ec: ExecutionContext)
@@ -20,14 +17,8 @@ class GithubProxy(conf: GithubConf, http: WSClient, comps: ControllerComponents)
   val SignatureHeader = "X-Hub-Signature"
 
   def proxied = Action(parse.tolerantText).async { req =>
-    req.headers.toSimpleMap.foreach { case (k, v) =>
-      log.info(s"$k = $v")
-    }
-    val file = Files.createTempFile("github", ".json")
-    Files.write(file, Seq(req.body).asJava)
-    log.info(s"Wrote to ${file.toAbsolutePath}")
     val result = for {
-      signature <- req.getQueryString(SignatureHeader).toRight(ErrorMessage(s"Header '$SignatureHeader' missing."))
+      signature <- req.headers.get(SignatureHeader).toRight(ErrorMessage(s"Header '$SignatureHeader' missing."))
       _ <- validateSignature(signature, req.body)
     } yield {
       val httpRequest = http.url(conf.githubUrl.append("/github-webhook/").url)
