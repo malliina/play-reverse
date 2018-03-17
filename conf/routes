@@ -1,0 +1,2 @@
+POST        /github-webhook         controllers.GithubProxy.proxied
+POST        /github-webhook/        controllers.GithubProxy.proxied
