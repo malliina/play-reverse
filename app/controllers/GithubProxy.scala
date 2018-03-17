@@ -21,7 +21,7 @@ class GithubProxy(conf: GithubConf, http: WSClient, comps: ControllerComponents)
 
   def proxied = Action(parse.tolerantText).async { req =>
     req.headers.toSimpleMap.foreach { case (k, v) =>
-      log.info(s"$k=$v")
+      log.info(s"$k = $v")
     }
     val file = Files.createTempFile("github", ".json")
     Files.write(file, Seq(req.body).asJava)
