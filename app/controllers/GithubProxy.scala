@@ -28,7 +28,7 @@ class GithubProxy(conf: GithubConf, http: WSClient, comps: ControllerComponents)
         Status(r.status)(r.bodyAsBytes)
       }
     }
-    result.fold(err => fut(fail(err)), identity)
+    result.fold(err => fut(logged(err, req)), identity)
   }
 
   def validateSignature(signature: String, payload: String) = {
@@ -38,9 +38,10 @@ class GithubProxy(conf: GithubConf, http: WSClient, comps: ControllerComponents)
     else Left(ErrorMessage(s"Invalid signature: '$signature', expected '$expected'."))
   }
 
-  def fail(err: ErrorMessage) = BadRequest(Json.obj("message" -> err))
-
-  def unauth(err: ErrorMessage) = Unauthorized(Json.obj("message" -> err))
+  def logged(err: ErrorMessage, req: RequestHeader) = {
+    log.error(s"${err.message} from '$req'.")
+    Unauthorized(Json.obj("message" -> err))
+  }
 
   def fut[T](t: T) = Future.successful(t)
 }
