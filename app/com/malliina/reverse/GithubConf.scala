@@ -3,11 +3,14 @@ package com.malliina.reverse
 import com.malliina.http.FullUrl
 import com.malliina.values.ErrorMessage
 
-case class GithubConf(githubSecret: String, githubUrl: FullUrl)
+case class GithubConf(githubSecret: String,
+                      jenkinsUnixUrl: FullUrl,
+                      jenkinsWindowsUrl: FullUrl)
 
 object GithubConf {
   val SecretKey = "github_secret"
-  val UrlKey = "github_url"
+  val UnixKey = "jenkins_unix_url"
+  val WindowsKey = "jenkins_windows_url"
 
   def fromEnvOrFail(): GithubConf =
     fromEnv().fold(e => throw new Exception(e.message), identity)
@@ -15,9 +18,11 @@ object GithubConf {
   def fromEnv() = {
     for {
       secret <- read(SecretKey)
-      urlStr <- read(UrlKey)
-      url <- FullUrl.build(urlStr)
-    } yield GithubConf(secret, url)
+      unixStr <- read(UnixKey)
+      unixUrl <- FullUrl.build(unixStr)
+      windowsStr <- read(WindowsKey)
+      windowsUrl <- FullUrl.build(windowsStr)
+    } yield GithubConf(secret, unixUrl, windowsUrl)
   }
 
   def read(key: String) = sys.env.get(key).orElse(sys.props.get(key))

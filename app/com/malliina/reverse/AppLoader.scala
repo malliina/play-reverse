@@ -1,9 +1,8 @@
-package com.malliina.app
+package com.malliina.reverse
 
 import com.malliina.http.FullUrl
 import com.malliina.play.app.DefaultApp
-import com.malliina.reverse.GithubConf
-import controllers.{AssetsComponents, GithubProxy}
+import controllers.{AssetsComponents, JenkinsProxy}
 import play.api.ApplicationLoader.Context
 import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.routing.Router
@@ -20,9 +19,13 @@ class AppComponents(context: Context)
     with AhcWSComponents
     with AssetsComponents {
   val conf =
-    if (environment.mode == Mode.Test) GithubConf("", FullUrl.build("http://www.google.com").toOption.get)
-    else GithubConf.fromEnvOrFail()
-  val home = new GithubProxy(conf, wsClient, controllerComponents)
+    if (environment.mode == Mode.Test) {
+      val dest = FullUrl.build("http://www.google.com").toOption.get
+      GithubConf("", dest, dest)
+    } else {
+      GithubConf.fromEnvOrFail()
+    }
+  val home = new JenkinsProxy(conf, wsClient, controllerComponents)
   override lazy val allowedHostsConfig = AllowedHostsConfig(Seq("ci.malliina.com", "localhost"))
   override val router: Router = new Routes(httpErrorHandler, home)
 }

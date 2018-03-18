@@ -5,7 +5,7 @@ import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
 
 lazy val p = PlayProject.server("play-reverse")
 
-val utilPlayDep = "com.malliina" %% "util-play" % "4.6.2"
+val utilPlayDep = "com.malliina" %% "util-play" % "4.8.0"
 
 organization := "com.malliina"
 version := "0.0.1"
