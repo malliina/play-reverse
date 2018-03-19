@@ -18,7 +18,8 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
   ws,
   utilPlayDep,
-  utilPlayDep % Test classifier "tests"
+  utilPlayDep % Test classifier "tests",
+  "com.malliina" %% "logstreams-client" % "0.0.9"
 )
 
 pipelineStages := Seq(digest, gzip)
@@ -31,3 +32,4 @@ httpsPort in Linux := Option("disabled")
 maintainer := "Michael Skogberg <malliina123@gmail.com>"
 // WTF?
 linuxPackageSymlinks := linuxPackageSymlinks.value.filterNot(_.link == "/usr/bin/starter")
+javaOptions in Universal += "-Dlogger.resource=logback-prod.xml"
