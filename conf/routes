@@ -1,3 +1,4 @@
+GET         /ping                   controllers.JenkinsProxy.ping
 POST        /github-webhook         controllers.JenkinsProxy.proxiedUnix
 POST        /github-webhook/        controllers.JenkinsProxy.proxiedUnix
 POST        /github-windows         controllers.JenkinsProxy.proxiedWindows

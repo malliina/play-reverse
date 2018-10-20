@@ -1,15 +1,14 @@
 import com.malliina.sbt.unix.LinuxKeys.{httpPort, httpsPort}
 import com.malliina.sbtplay.PlayProject
-import sbtbuildinfo.BuildInfoKey
-import sbtbuildinfo.BuildInfoKeys.{buildInfoKeys, buildInfoPackage}
+import sbtbuildinfo.BuildInfoKeys.buildInfoPackage
 
 lazy val p = PlayProject.server("play-reverse")
 
-val utilPlayDep = "com.malliina" %% "util-play" % "4.11.1"
+val utilPlayDep = "com.malliina" %% "util-play" % "4.16.0"
 
 organization := "com.malliina"
-version := "1.0.0"
-scalaVersion := "2.12.5"
+version := "1.1.0"
+scalaVersion := "2.12.7"
 scalacOptions := Seq("-unchecked", "-deprecation")
 resolvers ++= Seq(
   Resolver.jcenterRepo,
@@ -19,12 +18,12 @@ libraryDependencies ++= Seq(
   ws,
   utilPlayDep,
   utilPlayDep % Test classifier "tests",
-  "com.malliina" %% "logstreams-client" % "1.0.0"
+  "com.malliina" %% "logstreams-client" % "1.2.0"
 )
 
 pipelineStages := Seq(digest, gzip)
 
-buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion)
+//buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion)
 buildInfoPackage := "com.malliina.reverse"
 
 httpPort in Linux := Option("8464")

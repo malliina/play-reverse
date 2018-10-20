@@ -1,7 +1,8 @@
 package controllers
 
 import com.malliina.http.FullUrl
-import com.malliina.reverse.GithubConf
+import com.malliina.play.controllers.Caching
+import com.malliina.reverse.{AppMeta, GithubConf}
 import com.malliina.values.ErrorMessage
 import controllers.JenkinsProxy.log
 import org.apache.commons.codec.digest.HmacUtils
@@ -17,6 +18,8 @@ class JenkinsProxy(conf: GithubConf, http: WSClient, comps: ControllerComponents
 
   val SignatureHeader = "X-Hub-Signature"
 
+  def ping = Action(Caching.NoCache(Ok(Json.toJson(AppMeta.default))))
+
   def proxiedUnix = proxyTo(conf.jenkinsUnixUrl)
 
   def proxiedWindows = proxyTo(conf.jenkinsWindowsUrl)
@@ -30,6 +33,7 @@ class JenkinsProxy(conf: GithubConf, http: WSClient, comps: ControllerComponents
         .addHttpHeaders(req.headers.toSimpleMap.toSeq: _*)
         .post(req.body)
       httpRequest.map { r =>
+        log.info(s"Forwarded GitHub webhook to '$url'.")
         Status(r.status)(r.bodyAsBytes)
       }
     }

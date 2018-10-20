@@ -9,19 +9,19 @@ case class GithubConf(githubSecret: String,
                       jenkinsWindowsUrl: FullUrl)
 
 object GithubConf {
-  val SecretKey = "github_secret"
-  val UnixKey = "jenkins_unix_url"
-  val WindowsKey = "jenkins_windows_url"
+  val SecretKey = "reverse.github.secret"
+  val UnixKey = "reverse.jenkins.unix.url"
+  val WindowsKey = "reverse.jenkins.windows.url"
 
   def forMode(mode: Mode, conf: Configuration): GithubConf = {
-    if (mode == Mode.Prod) {
-      GithubConf.fromConfOrFail(conf)
-    } else if (mode == Mode.Test) {
-      val dest = FullUrl.build("http://www.google.com").toOption.get
-      GithubConf("", dest, dest)
-    } else {
-      GithubConf.fromEnvOrFail()
-    }
+    if (mode == Mode.Prod) GithubConf.fromConfOrFail(conf)
+    else if (mode == Mode.Test) fake
+    else GithubConf.fromEnv().getOrElse(fake)
+  }
+
+  def fake = {
+    val dest = FullUrl.build("http://www.google.com").toOption.get
+    GithubConf("", dest, dest)
   }
 
   def fromEnvOrFail(): GithubConf =
