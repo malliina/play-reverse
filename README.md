@@ -1,3 +1,7 @@
-# play-template #
+# play-reverse
 
-This is an empty [Play Framework](http://www.playframework.com/) project template.
+A reverse proxy for GitHub webhooks.
+
+## Deployment
+
+Deployed to ci.malliina.com. Push to master to deploy.

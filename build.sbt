@@ -4,11 +4,11 @@ import sbtbuildinfo.BuildInfoKeys.buildInfoPackage
 
 lazy val p = PlayProject.server("play-reverse")
 
-val utilPlayDep = "com.malliina" %% "util-play" % "4.16.0"
+val utilPlayDep = "com.malliina" %% "util-play" % "5.0.0"
 
 organization := "com.malliina"
 version := "1.1.0"
-scalaVersion := "2.12.7"
+scalaVersion := "2.12.8"
 scalacOptions := Seq("-unchecked", "-deprecation")
 resolvers ++= Seq(
   Resolver.jcenterRepo,
@@ -18,7 +18,7 @@ libraryDependencies ++= Seq(
   ws,
   utilPlayDep,
   utilPlayDep % Test classifier "tests",
-  "com.malliina" %% "logstreams-client" % "1.2.0"
+  "com.malliina" %% "logstreams-client" % "1.5.0"
 )
 
 pipelineStages := Seq(digest, gzip)

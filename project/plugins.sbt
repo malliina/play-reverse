@@ -1,4 +1,4 @@
-scalaVersion := "2.12.7"
+scalaVersion := "2.12.8"
 
 resolvers ++= Seq(
   Resolver.bintrayRepo("malliina", "maven"),
@@ -8,7 +8,7 @@ resolvers ++= Seq(
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 classpathTypes += "maven-plugin"
 Seq(
-  "com.malliina" % "sbt-play" % "1.4.1",
+  "com.malliina" % "sbt-play" % "1.6.0",
   "com.typesafe.sbt" % "sbt-digest" % "1.1.4",
   "com.typesafe.sbt" % "sbt-gzip" % "1.0.2"
 ) map addSbtPlugin
