@@ -14,9 +14,9 @@ class AppLoader extends DefaultApp(new AppComponents(_))
 
 class AppComponents(context: Context)
   extends BuiltInComponentsFromContext(context)
-    with HttpFiltersComponents
-    with AhcWSComponents
-    with AssetsComponents {
+  with HttpFiltersComponents
+  with AhcWSComponents
+  with AssetsComponents {
   val conf = GithubConf.forMode(environment.mode, configuration)
   val home = new JenkinsProxy(conf, wsClient, controllerComponents)
   override lazy val allowedHostsConfig = AllowedHostsConfig(Seq("ci.malliina.com", "localhost"))

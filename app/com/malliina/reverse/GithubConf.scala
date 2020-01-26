@@ -4,9 +4,7 @@ import com.malliina.http.FullUrl
 import com.malliina.values.ErrorMessage
 import play.api.{Configuration, Mode}
 
-case class GithubConf(githubSecret: String,
-                      jenkinsUnixUrl: FullUrl,
-                      jenkinsWindowsUrl: FullUrl)
+case class GithubConf(githubSecret: String, jenkinsUnixUrl: FullUrl, jenkinsWindowsUrl: FullUrl)
 
 object GithubConf {
   val SecretKey = "reverse.github.secret"

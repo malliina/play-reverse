@@ -21,8 +21,8 @@ object JenkinsProxy {
 }
 
 class JenkinsProxy(conf: GithubConf, http: WSClient, comps: ControllerComponents)(
-    implicit ec: ExecutionContext)
-    extends AbstractController(comps) {
+  implicit ec: ExecutionContext
+) extends AbstractController(comps) {
 
   val SignatureHeader = "X-Hub-Signature"
 
